@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Room>
+
+@using HotelManagment.Enum;
+
+@{
+    ViewData["title"] = "list of Actors";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+
+        <table class="table">
+            <thead>
+                <tr class="text-center">
+                    <th>@Html.DisplayNameFor(model => model.Level)</th>
+                    <th>@Html.DisplayNameFor(model => model.Availabilty)</th>
+                    <th>@Html.DisplayNameFor(model => model.RoomType)</th>
+
+                    <th>Actions</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="align-middle">
+                            @Html.DisplayFor(modelItem => item.Level)
+                        </td>
+                        <td class="align-middle">
+                            @Html.DisplayFor(modelItem => item.Availabilty)
+                        </td>
+                        <td class="align-middle">
+                            @Html.DisplayFor(modelItem => item.RoomType)
+                        </td>
+
+                        <td class="align-middle">
+
+                            @if (AccountInfo.IsAdmin == "app-user")
+                            {
+                                <a class="btn btn-danger text-white" asp-controller="Rooms" asp-action="Cancel" asp-route-id="@item.Id"><i class="bi bi-trash"></i>Cancel</a>
+                            }
+
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Hotel>
+
+@{
+    ViewData["title"] = "list of Hotels";
+}
+
+<div class="row">
+
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 col-xs-6 border-primary mb-3">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-12">
+                        <div class="card-header text-white bg-info">
+                            <p class="card-text">
+                                <h5 class="card-title">
+                                    @item.Name
+
+                                    <a class="text-whitev float-end" asp-action="Edit" asp-route-id="@item.Id">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+
+                                </h5>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="@item.ImageUrl" width="100%" alt="@item.Name">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <p class="card-text"></p>
+                            <p class="card-text"><b>Location: </b>@item.Location</p>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-footer ">
+                            <p class="card-text">
+                                <a class="btn btn-outline-primary float-right" asp-controller="Rooms" asp-action="Index" asp-route-id="@item.Id">
+                                    <i class="bi bi-eye-fill"></i> Show Rooms
+                                </a>
+
+                                <a class="btn btn-danger text-white float-end" asp-controller="Hotels" asp-route-id="@item.Id" asp-action="Delete">
+
+                                    <i class="bi bi-trash"></i> Delete
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+
+</div>
+
+@if (AccountInfo.IsAdmin == "admin-user")
+{
+    @await Html.PartialAsync("_CreateItem", "Hotels")
+}

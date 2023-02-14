@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Room>
+
+@using HotelManagment.Enum;
+
+@{
+    ViewData["title"] = "list of Rooms";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+
+        <table class="table">
+            <thead>
+                <tr class="text-center">
+                    <th>@Html.DisplayNameFor(model => model.Level)</th>
+                    <th>@Html.DisplayNameFor(model => model.Availabilty)</th>
+                    <th>@Html.DisplayNameFor(model => model.RoomType)</th>
+
+                    <th>Actions</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="align-middle">
+                            @Html.DisplayFor(modelItem => item.Level)
+                        </td>
+                        <td class="align-middle">
+                            @Html.DisplayFor(modelItem => item.Availabilty)
+                        </td>
+                        <td class="align-middle">
+                            @Html.DisplayFor(modelItem => item.RoomType)
+                        </td>
+
+                        <td class="align-middle">
+
+                            @if (AccountInfo.IsAdmin == "app-user")
+                            {
+                                if ((item.RoomType == RoomType.Double || item.RoomType == RoomType.Suite) && item.RoomCounter < 2)
+                                {
+                                    if (AccountInfo.IsCheckedBefore)
+                                    {
+                                        <h6>Discount</h6>
+                                    }
+                                    <a class="btn btn-outline-primary" asp-action="Reserve" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i>Reserve</a>
+
+                                }
+                                else if (item.Availabilty == RoomAvailabilty.Available && item.RoomType == RoomType.Single)
+                                {
+                                    if (AccountInfo.IsCheckedBefore)
+                                    {
+                                        <h6>Discount</h6>
+                                    }
+                                    <a class="btn btn-outline-primary" asp-action="Reserve" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i>Reserve</a>
+                                }
+                            }
+
+                            @if (AccountInfo.IsAdmin == "admin-user")
+                            {
+                                <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i>Edit</a>
+                                <a class="btn btn-danger text-white" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i>Delete</a>
+                            }
+
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@if (AccountInfo.IsAdmin == "admin-user")
+{
+    <div style="position:fixed; right:25px; bottom:50px;" text-white">
+        <a asp-controller="Rooms" asp-action="Create" asp-route-id="@ViewBag.id" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Add New Room
+        </a>
+    </div>
+}
